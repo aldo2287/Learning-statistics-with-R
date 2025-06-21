@@ -1,0 +1,155 @@
+# Descriptive statistics chapter 5
+
+load( "Your Directory" )
+library(lsr)
+who()
+
+# this file consist in two variables of the Australian Football League (AFL)
+
+# afl.margins = winning (number of points)
+# afl.finalists (names of the 400 teams)
+
+print(afl.margins)
+
+#starting descriptive statistics with an histogram (helps to get sense of what the data look like)
+
+hist(afl.margins)
+
+# Mesure of central tendency (understand the average, middle of where the data is)
+
+# Mean = average | add all the values and divide by the total number of values
+
+# First piece of notation is N (number of observations)
+
+# X is the traditional label of the observations X1 (first observation), X2(second observation),
+# Xn (last observation)
+
+# Xi (i-th observations)
+
+# Sample mean formula:
+# X̄ = (X₁ + X₂ + ... + X_N) / N
+
+plot(1:10, 1:10, main=expression(bar(X) == (X[1] + X[2] + "..." + X[N])/N))
+
+# this formula in short will be with the use of the summation symbol ∑
+# Summation notation:
+# sum from i=1 to 5 of X_i
+# LaTeX: \sum_{i=1}^{5} X_i
+
+plot(1:10, 1:10, main=expression(sum(i==1, 5, X[i])))
+
+# in this case i=5 as the book exercise
+
+# the sum add up all the observations (X1+X2+X3+X4+X5)
+
+
+# Formula for the sample mean:
+# X̄ = (1/N) * sum from i=1 to N of X_i
+# LaTeX version:
+# \bar{X} = \frac{1}{N} \sum_{i=1}^{N} X_i
+
+plot(1:10, 1:10, main=expression(bar(X) == (1/N) * sum(i==1, N, X[i])))
+
+# Now I will be calculating the mean in R
+
+(56 + 31 + 56 + 8 + 32) / 5 # simple form
+
+sum( afl.margins ) #large obervations real word scenarios
+
+sum( afl.margins[1:5] ) #sum of the first five observations
+
+sum( afl.margins[1:5] ) / 5 #mean calculation 
+
+mean( x = afl.margins ) # mean calculation 
+
+# The Median calculation (second mesure of central tendency) - the middle value
+
+# 8,31,32,56,56 --- 32 is the middle value
+
+# 8,14,31,32,56,56 --- 31 and 32 are the middle values (avergae is 31.5)
+
+#what happens within R?
+
+sort( x = afl.margins ) 
+
+median( x = afl.margins )
+
+#below there is a visualization of where to locate median and mean in the dataset
+# Sample data: a right-skewed distribution
+set.seed(123)
+data <- c(rnorm(100, mean=50, sd=10), rnorm(20, mean=80, sd=5))
+
+# Compute mean and median
+data_mean <- mean(data)
+data_median <- median(data)
+
+# Create histogram
+hist(data, 
+     breaks=20, 
+     col="lightblue", 
+     main="Illustration of Mean vs Median", 
+     xlab="Value",
+     border="white")
+
+# Add vertical lines for mean and median
+abline(v=data_mean, col="red", lwd=2)
+abline(v=data_median, col="darkgreen", lwd=2)
+
+# Add legend
+legend("topright", 
+       legend=c("Mean (centre of gravity)", "Median (middle value)"), 
+       col=c("red", "darkgreen"), 
+       lwd=2)
+
+# Add text annotations
+text(data_mean + 1, 8, "Mean", col="red", cex=0.8)
+text(data_median - 1, 8, "Median", col="darkgreen", cex=0.8)
+
+# the mean is the centre of gravity and the median is the middle value
+
+# If your data are nominal scale, you probably shouldn’t be using either the mean or the median. Both the mean and the median rely on the idea that the numbers assigned to values are meaningful. If the numbering scheme is arbitrary, then it’s probably best to use the mode
+
+# If your data are ordinal scale, you’re more likely to want to use the median than the mean, The median only makes use of the order information in your data (i.e., which numbers are bigger), but doesn’t depend on the precise numbers involved. That’s exactly the situation that applies when your data are ordinal scale. The mean, on the other hand, makes use of the precise numeric values assigned to the observations, so it’s not really appropriate for ordinal data.
+
+# For interval and ratio scale data, either one is generally acceptable. Which one you pick depends a bit on what you’re trying to achieve. The mean has the advantage that it uses all the information in the data (which is useful when you don’t have a lot of data), but it’s very sensitive to extreme values
+
+
+# TRIMMED MEAN
+
+# To calculate a trimmed mean, what you do is “discard” the most extreme examples on both ends (i.e., the largest and the smallest), and then take the mean of everything else
+
+dataset <- c( -15,2,3,4,5,6,7,8,9,12 )
+
+mean ( x = dataset)
+
+mean ( x= dataset, trim = .1)
+
+# mode is the value that occurs the most frequentely
+
+head(afl.finalists, 25) # who as plays the most finals? showing the 25 rows
+
+
+# producing a frequency table 
+
+table( afl.finalists )
+
+# now we can see who's played the most finals
+
+modeOf( x = afl.finalists )
+
+
+# how many number is the modal frequancy? ( number of final games plays at this occasion)
+
+maxFreq( x = afl.finalists )
+
+# Taken together, we observe that Geelong (39 finals) played in more finals than any other team during the 1987-2010 period.
+
+# mode in this case is caluclated on nominal scale data ( median and menas will be uselss)
+
+# if the scale was ratio scale for example the mesure you need is mean or median
+
+# guess the exact margin - this is a betting example observig that 8 of 176 games (45%) by picking a random football game 
+
+modeOf( x = afl.margins )
+
+maxFreq( x = afl.margins )
